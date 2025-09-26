@@ -3,7 +3,7 @@ from models.producto import Categoria
 from sqlmodel import select
 
 def crear_categorias_iniciales():
-    #Crea las categorias basicas para una tienda de hardware
+    """Crea las categorias basicas para una tienda de hardware"""
     categorias = [
         {"nombre": "Placas de Video", "descripcion": "Tarjetas graficas para gaming y trabajo"},
         {"nombre": "Procesadores", "descripcion": "CPUs Intel y AMD"},

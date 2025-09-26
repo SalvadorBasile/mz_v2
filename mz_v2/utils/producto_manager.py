@@ -14,7 +14,7 @@ class ProductoManager:
                        stock:int,
                        categoria_id:int,
                        imagen_principal:Optional[str] = None) -> Producto:
-        #Creamos un nuevo producto
+        """Creamos un nuevo producto"""
         producto = Producto(
             nombre=nombre,
             descripcion=descripcion,
@@ -28,8 +28,15 @@ class ProductoManager:
         return producto
     
     @staticmethod
+    def obtener_producto_por_id(producto_id:int) -> Optional[Producto]:
+        """Obtiene un producto por su id"""
+        with rx.session() as session:
+            producto = session.get(Producto, producto_id)
+            return producto
+    
+    @staticmethod
     def obtener_productos_por_categoria(categoria_id:int) -> List[Producto]:
-        #Obtiene todos los productos de una categoria
+        """Obtiene todos los productos de una categoria"""
 
         #consulta a la base de datos
         with rx.session() as session:
@@ -42,7 +49,7 @@ class ProductoManager:
         
     @staticmethod
     def obtener_productos_activos():
-        #Obtiene todos los productos de la bd
+        """Obtiene todos los productos de la bd"""
         with rx.session() as session:
             statement = select(Producto).where(
                 Producto.activo == True
@@ -52,7 +59,7 @@ class ProductoManager:
         
     @staticmethod
     def buscar_producto(termino:str) -> List[Producto]:
-        #Buscar productos por nombre o descripcion
+        """Buscar productos por nombre o descripcion"""
         new_termino = termino.strip()
         if new_termino != "":
             with rx.session() as session:
@@ -68,7 +75,7 @@ class ProductoManager:
 
     @staticmethod
     def verificar_stock(producto_id:int, cantidad: int) -> bool:
-        #Verificar si hay suficiente stock
+        """Verificar si hay suficiente stock"""
         with rx.session() as session:
             producto = session.get(Producto, producto_id)
             if producto and producto.stock >= cantidad:
@@ -77,7 +84,7 @@ class ProductoManager:
         
     @staticmethod
     def reducir_stock(producto_id: int, cantidad: int) -> bool:
-        #Reduce stock despues de una venta
+        """Reduce stock despues de una venta"""
         with rx.session() as session:
             producto = session.get(Producto, producto_id)
             if producto and producto.stock >= cantidad:
